@@ -1,7 +1,23 @@
-.Rproj.user
+# R / RStudio
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
 .httr-oauth
 .DS_Store
-.quarto
+Thumbs.db
+.quarto/
+
+# Outputs (ne sledimo končnim htmljem)
+*.html
+*.nb.html
+figs/
+env_snapshot/
+
+# Data
+data/raw/
+data/processed/*.RData
+data/processed/*.rds
+
+
