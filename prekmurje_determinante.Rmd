@@ -1,0 +1,200 @@
+---
+title: "Pomurje vs. ostale regije — HLY & determinante"
+output:
+  html_document: 
+    toc: true
+    number_sections: true
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo   = TRUE,   # pokaži kodo
+  eval   = TRUE,   # tudi izvedi kodo
+  include= TRUE,   # vključi izpis v dokument
+  message= FALSE,
+  warning= FALSE
+)
+options(digits = 3)
+
+pkgs <- c("here","readr","dplyr","tidyr","stringr","ggplot2","ggrepel","scales",
+          "broom","performance","lmtest","sandwich","car","see")
+to_install <- setdiff(pkgs, rownames(installed.packages()))
+if (length(to_install)) install.packages(to_install)
+invisible(lapply(pkgs, library, character.only = TRUE))
+theme_set(theme_minimal())
+
+```
+
+# UVOZ PODATKOV IN IMENA SPREMENLJIVK
+
+candidates <- c(
+  here::here("data","processed","master_regijski_kazalniki_chat.csv"),
+  here::here("master_regijski_kazalniki_chat.csv"),
+  "C:/Users/anati/Desktop/master_regijski_kazalniki_chat.csv"
+)
+master_path <- candidates[which(file.exists(candidates))][1]
+if (is.na(master_path)) stop("Ne najdem master CSV. Postavi ga v data/processed/ ali root projekta.")
+
+master <- readr::read_csv(master_path)
+
+dat <- master |>
+  dplyr::rename(
+    HLY           = `Zdrava leta ?vljenja (2020)`,
+    ITM           = `ITM (%)`,
+    Prehrana      = `Prehrana (% vsak dan)`,
+    Aktivnost     = `Telesna aktivnost (%)`,
+    Izobrazba     = `Izobrazba terciar (%)`,
+    Brezposelnost = `Stopnja brezposelnosti (%)`,
+    Delovna       = `Stopnja delovne aktivnosti (%)`,
+    AlkBolezni    = `Bolezni pripisljive alkoholu (2020)`,
+    Opijanje      = `Visoko tvegano opijanje (2021)`
+  )
+
+
+reg12 <- dat |> dplyr::filter(!Regija %in% c("Slovenija","Ostale regije (AVG)"))
+stopifnot(nrow(reg12) == 12)
+
+# DESKRIPTIVA (Pomurje vs.ostale)
+
+desc_grp <- dat |>
+  dplyr::mutate(Skupina = ifelse(Regija == "Pomurska", "Pomurje", "Ostale regije")) |>
+  dplyr::group_by(Skupina) |>
+  dplyr::summarise(dplyr::across(c(HLY, ITM, Prehrana, Aktivnost, Izobrazba,
+                                   Brezposelnost, Delovna, AlkBolezni, Opijanje),
+                                 ~mean(.x, na.rm = TRUE), .names = "{.col}"),
+                   .groups = "drop")
+desc_grp
+
+ggplot(desc_grp, aes(Skupina, HLY, fill = Skupina)) +
+  geom_col() +
+  labs(title = "Zdrava leta življenja: Pomurje vs. ostale regije",
+       x = NULL, y = "HLY (leta)") +
+  theme(legend.position = "none")
+  
+# KORELACIJE&SCATTER (RQ3)
+
+preds <- c("ITM","Prehrana","Aktivnost","Izobrazba","Brezposelnost",
+           "Delovna","AlkBolezni","Opijanje")
+
+cors_tbl <- tibble::tibble(
+  Determinanta = preds,
+  r = sapply(preds, function(v) cor(reg12$HLY, reg12[[v]], use = "complete.obs"))
+) |>
+  dplyr::arrange(dplyr::desc(abs(r)))
+cors_tbl
+
+ggplot(reg12, aes(Izobrazba, HLY)) +
+  geom_point() + geom_smooth(method = "lm", se = TRUE) +
+  ggrepel::geom_text_repel(aes(label = Regija), size = 3) +
+  labs(title = "HLY ~ Izobrazba (%)")
+
+ggplot(reg12, aes(Delovna, HLY)) +
+  geom_point() + geom_smooth(method = "lm", se = TRUE) +
+  ggrepel::geom_text_repel(aes(label = Regija), size = 3) +
+  labs(title = "HLY ~ Delovna aktivnost (%)")
+
+ggplot(reg12, aes(ITM, HLY)) +
+  geom_point() + geom_smooth(method = "lm", se = TRUE) +
+  ggrepel::geom_text_repel(aes(label = Regija), size = 3) +
+  labs(title = "HLY ~ ITM (%)")
+
+# PARSIMONIOZNI OLS PLUS DIAGNOSTIKA (RQ4)
+
+scale2 <- function(x) as.numeric(scale(x))
+
+m_pars <- lm(HLY ~ scale2(Izobrazba) + scale2(Delovna) + scale2(ITM),
+             data = reg12)
+
+
+lmtest::coeftest(m_pars, vcov = sandwich::vcovHC(m_pars, type = "HC3"))
+
+
+car::vif(m_pars)
+performance::check_collinearity(m_pars)
+
+par(mfrow=c(1,2))
+hist(residuals(m_pars), main="Histogram of residuals", xlab="Residuals")
+qqnorm(residuals(m_pars)); qqline(residuals(m_pars), col=2)
+par(mfrow=c(1,1))
+shapiro.test(residuals(m_pars))
+plot(fitted(m_pars), residuals(m_pars),
+     xlab="Fitted values", ylab="Residuals",
+     main="Residuals vs Fitted"); abline(h=0, lty=2, col="grey40")
+lmtest::bptest(m_pars)
+influence.measures(m_pars)
+performance::check_model(m_pars)
+
+# POLNI MODEL PLUS PRIMERJAVA
+
+m_full <- lm(HLY ~ scale2(Izobrazba)+scale2(Delovna)+scale2(ITM)+
+                   scale2(Brezposelnost)+scale2(AlkBolezni)+
+                   scale2(Prehrana)+scale2(Aktivnost)+scale2(Opijanje),
+             data = reg12)
+
+lmtest::coeftest(m_full, vcov = sandwich::vcovHC(m_full, type="HC3"))
+car::vif(m_full); performance::check_collinearity(m_full)
+
+aicc <- function(mod){
+  n <- length(residuals(mod)); k <- length(coef(mod))
+  AIC(mod) + (2*k*(k+1))/(n - k - 1)
+}
+
+data.frame(
+  Model = c("Parsimonious","Full"),
+  AIC   = c(AIC(m_pars), AIC(m_full)),
+  AICc  = c(aicc(m_pars), aicc(m_full)),
+  R2    = c(performance::r2(m_pars)$R2, performance::r2(m_full)$R2),
+  AdjR2 = c(performance::r2(m_pars)$R2_adjusted, performance::r2(m_full)$R2_adjusted)
+)
+
+# IZVOZ CSV ZA TABLEAU
+out_dir <- here::here("data","tableau")
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Master wide
+readr::write_csv(reg12, file.path(out_dir, "regije_master_wide.csv"))
+
+# Pomurje vs ostale
+readr::write_csv(desc_grp, file.path(out_dir, "pomurje_vs_ostale_desc.csv"))
+
+# Radar long
+pom <- reg12 |> dplyr::filter(Regija == "Pomurska")
+others_avg <- reg12 |>
+  dplyr::filter(Regija != "Pomurska") |>
+  dplyr::summarise(dplyr::across(c(HLY, ITM, Prehrana, Aktivnost, Izobrazba,
+                                   Brezposelnost, Delovna, AlkBolezni, Opijanje),
+                                 mean, na.rm=TRUE)) |>
+  dplyr::mutate(Regija = "Ostale regije")
+
+cmp <- dplyr::bind_rows(
+  pom |> dplyr::select(Regija, HLY, ITM, Prehrana, Aktivnost, Izobrazba,
+                       Brezposelnost, Delovna, AlkBolezni, Opijanje),
+  others_avg |> dplyr::select(Regija, HLY, ITM, Prehrana, Aktivnost, Izobrazba,
+                              Brezposelnost, Delovna, AlkBolezni, Opijanje)
+)
+
+radar_long <- cmp |>
+  tidyr::pivot_longer(-Regija, names_to = "Kazalnik", values_to = "Vrednost")
+readr::write_csv(radar_long, file.path(out_dir, "radar_pomurje_vs_ostale_long.csv"))
+
+# Korelacije
+readr::write_csv(cors_tbl, file.path(out_dir, "correlations_hly.csv"))
+
+# Parsimoniozni koeficienti (HC3)
+reg_pars <- lmtest::coeftest(m_pars, vcov = sandwich::vcovHC(m_pars, type="HC3")) |>
+  broom::tidy() |>
+  dplyr::mutate(term = dplyr::recode(term,
+    "(Intercept)"       = "Intercept",
+    "scale2(Izobrazba)" = "Education (z)",
+    "scale2(Delovna)"   = "Employment (z)",
+    "scale2(ITM)"       = "BMI/ITM (z)"
+  )) |>
+  dplyr::rename(Estimate = estimate, StdError = std.error,
+                t = statistic, p = p.value)
+readr::write_csv(reg_pars, file.path(out_dir, "regression_pars_HC3.csv"))
+
+```
+
+
