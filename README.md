@@ -8,6 +8,8 @@ Glavne ugotovitve: **višja delovna aktivnost (+)** in **višji ITM (−)** najm
 ## Live story (Tableau)
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
+Kako citirati: Tivold, A. (2025). Pomurje vs. ostale regije: Zdrava leta življenja (HLY) in determinante [Data visualization]. Tableau Public. https://public.tableau.com/…/Story1
+
 ## Struktura repozitorija
 - `prekmurje_determinante.Rmd` – reproducibilno poročilo (koda + grafi).
 - `data/tableau/` – izvozi CSV za Tableau (radar, observed vs predicted …).
@@ -32,6 +34,8 @@ Key finding: **employment/active workforce (+)** and **BMI/overweight (−)** ex
 
 ## Live story (Tableau)
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
+
+How to cite: Tivold, A. (2025). Pomurje vs. ostale regije: Zdrava leta življenja (HLY) in determinante [Data visualization]. Tableau Public. https://public.tableau.com/…/Story1
 
 ### Repository layout
 - `prekmurje_determinante.Rmd` – reproducible report (code + figures).
