@@ -1,5 +1,3 @@
-# Prekmurje vs.ostale regije-HLY-Determinante
-
 # Pomurje vs. ostale regije — Zdrava leta življenja (HLY) in determinante
 [English below](#english)
 
