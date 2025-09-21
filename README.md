@@ -17,7 +17,6 @@ Glavne ugotovitve: **višja delovna aktivnost (+)** in **višji ITM (−)** najm
 Viri: SURS, NIJZ; lastni izračuni. Licenca kode: MIT.
 
 ### Live story (Tableau)
-[![Open interactive story](tableau/preview.png)]
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
 [Prenesi workbook (.twbx)](tableau/Pomurje_HLY_story.twbx)
@@ -42,7 +41,6 @@ Key finding: **employment/active workforce (+)** and **BMI/overweight (−)** ex
 Sources: SORS, NIJZ; own calculations. License: MIT.
 
 ### Live story (Tableau)
-[![Open interactive story](tableau/preview.png)]
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
 [Download workbook (.twbx)](tableau/Pomurje_HLY_story.twbx)
