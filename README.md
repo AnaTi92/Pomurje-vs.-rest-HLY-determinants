@@ -9,7 +9,7 @@ Glavne ugotovitve: **višja delovna aktivnost (+)** in **višji ITM (−)** najm
 ## Struktura repozitorija
 - `prekmurje_determinante.Rmd` – reproducibilno poročilo (koda + grafi).
 - `data/tableau/` – izvozi CSV za Tableau (radar, observed vs predicted …).
-- `data/processed/` – (po želji) master CSV za analizo.
+- `data/processed/` –  master CSV za analizo.
 
 ## Kako pognati
 1. Odpri projekt v RStudiu in `prekmurje_determinante.Rmd`.
@@ -28,7 +28,7 @@ Key finding: **employment/active workforce (+)** and **BMI/overweight (−)** ex
 ### Repository layout
 - `prekmurje_determinante.Rmd` – reproducible report (code + figures).
 - `data/tableau/` – CSV exports for Tableau.
-- `data/processed/` – optional master CSV.
+- `data/processed/` –  master CSV.
 
 ### How to run
 1. Open the project in RStudio and the Rmd file.
