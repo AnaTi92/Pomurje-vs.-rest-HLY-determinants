@@ -19,7 +19,6 @@ Viri: SURS, NIJZ; lastni izračuni. Licenca kode: MIT.
 ### Live story (Tableau)
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
-[Prenesi workbook (.twbx)](tableau/Pomurje_HLY_story.twbx)
 
 ---
 
@@ -43,4 +42,4 @@ Sources: SORS, NIJZ; own calculations. License: MIT.
 ### Live story (Tableau)
 (https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
-[Download workbook (.twbx)](tableau/Pomurje_HLY_story.twbx)
+
