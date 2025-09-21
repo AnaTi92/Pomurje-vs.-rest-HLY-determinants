@@ -1,8 +1,12 @@
 # Pomurje vs. ostale regije — Zdrava leta življenja (HLY) in determinante
+# Pomurje vs. rest-Healty Life Years and Determinants
 [English below](#english)
 
 Analiza razlik v zdravih letih življenja (HLY) med slovenskimi regijami in povezav z determinantami zdravja.
 Glavne ugotovitve: **višja delovna aktivnost (+)** in **višji ITM (−)** najmočneje pojasnjujeta razlike v HLY.
+
+## Live story (Tableau)
+(https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
 ## Struktura repozitorija
 - `prekmurje_determinante.Rmd` – reproducibilno poročilo (koda + grafi).
@@ -16,8 +20,7 @@ Glavne ugotovitve: **višja delovna aktivnost (+)** in **višji ITM (−)** najm
 
 Viri: SURS, NIJZ; lastni izračuni. Licenca kode: MIT.
 
-### Live story (Tableau)
-(https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
+Kako citirati: Tivold, A. (2025). Pomurje vs. rest — HLY & determinants (RMarkdown + Tableau) [Source code]. GitHub. https://github.com/AnaTi92/Pomurje-vs.-rest-HLY-determinants
 
 
 ---
@@ -26,6 +29,9 @@ Viri: SURS, NIJZ; lastni izračuni. Licenca kode: MIT.
 
 Analysis of differences in **Healthy Life Years (HLY)** across Slovenian regions and their association with health determinants.
 Key finding: **employment/active workforce (+)** and **BMI/overweight (−)** explain most variation in HLY.
+
+## Live story (Tableau)
+(https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
 
 ### Repository layout
 - `prekmurje_determinante.Rmd` – reproducible report (code + figures).
@@ -39,7 +45,5 @@ Key finding: **employment/active workforce (+)** and **BMI/overweight (−)** ex
 
 Sources: SORS, NIJZ; own calculations. License: MIT.
 
-### Live story (Tableau)
-(https://public.tableau.com/views/Book1Pomurjevs_ostaleregijeZdravaletaivljenjaHLYindeterminante/Story1?:showVizHome=no&:toolbar=top)
-
+How to cite: Tivold, A. (2025). Pomurje vs. rest — HLY & determinants (RMarkdown + Tableau) [Source code]. GitHub. https://github.com/AnaTi92/Pomurje-vs.-rest-HLY-determinants
 
