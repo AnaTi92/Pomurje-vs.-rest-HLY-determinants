@@ -1,5 +1,5 @@
 # Pomurje vs. ostale regije — Zdrava leta življenja (HLY) in determinante
-# Pomurje vs. rest-Healty Life Years and Determinants
+(Pomurje vs. rest-Healty Life Years and Determinants)
 [English below](#english)
 
 Analiza razlik v zdravih letih življenja (HLY) med slovenskimi regijami in povezav z determinantami zdravja.
